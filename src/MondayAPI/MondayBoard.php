@@ -9,10 +9,29 @@ use TBlack\MondayAPI\ObjectTypes\Board;
 use TBlack\MondayAPI\ObjectTypes\Column;
 use TBlack\MondayAPI\ObjectTypes\BoardKind;
 
-class MondayBoard extends MondayAPI
+class MondayBoard
 {
     protected $board_id = false;
     protected $group_id = false;
+    protected $api;
+
+    const TYPE_QUERY    = 'query';
+    const TYPE_MUTAT    = 'mutation';
+
+    public function __construct(ClientInterface $api = null)
+    {
+        $this->api = isset($api) ? $api : new MondayAPI();
+    }
+
+    /***
+     * @deprecated Inject a MondayAPI instance with token already set.
+     */
+    public function setToken(Token $token )
+    {
+        $this->api->setToken($token);
+
+        return $this;
+    }
 
     public function on( Int $board_id )
     {
@@ -38,7 +57,7 @@ class MondayBoard extends MondayAPI
             $Board->getFields(['id'])
         );
 
-        return $this->request(self::TYPE_MUTAT, $create);
+        return $this->api->request($create, self::TYPE_MUTAT);
     }
 
     public function archiveBoard( Array $fields = [] )
@@ -55,7 +74,7 @@ class MondayBoard extends MondayAPI
             $Board->getFields($fields)
         );
 
-        return $this->request(self::TYPE_MUTAT, $create);
+        return $this->api->request($create, self::TYPE_MUTAT);
     }
 
     public function getBoards( Array $arguments = [], Array $fields = [])
@@ -72,7 +91,7 @@ class MondayBoard extends MondayAPI
             $Board->getFields($fields)
         );
 
-        return $this->request( self::TYPE_QUERY, $boards );
+        return $this->api->request($boards, self::TYPE_QUERY);
     }
 
     public function getColumns( Array $fields = [] )
@@ -92,7 +111,7 @@ class MondayBoard extends MondayAPI
             [$columns]
         );
 
-        return $this->request( self::TYPE_QUERY, $boards );
+        return $this->api->request($boards, self::TYPE_QUERY);
     }
 
     public function addItem(String $item_name, array $items = [], $create_labels_if_missing = false)
@@ -120,7 +139,7 @@ class MondayBoard extends MondayAPI
         if ($create_labels_if_missing)
             $create = str_replace('}"){', '}", create_labels_if_missing:true){', $create);
 
-        return $this->request(self::TYPE_MUTAT, $create);
+        return $this->api->request($create, self::TYPE_MUTAT);
     }
 
     public function addSubItem( Int $parent_item_id, String $item_name, Array $items = [] )
@@ -139,7 +158,7 @@ class MondayBoard extends MondayAPI
             $SubItem->getFields(['id'])
         );
 
-        return $this->request(self::TYPE_MUTAT, $create);
+        return $this->api->request($create, self::TYPE_MUTAT);
     }
 
     public function archiveItem( Int $item_id ){
@@ -151,7 +170,7 @@ class MondayBoard extends MondayAPI
             $Item->getFields(['id'])
         );
 
-        return $this->request(self::TYPE_MUTAT, $archive);
+        return $this->api->request($archive, self::TYPE_MUTAT);
     }
 
     public function deleteItem( Int $item_id )
@@ -164,7 +183,7 @@ class MondayBoard extends MondayAPI
             $Item->getFields(['id'])
         );
 
-        return $this->request(self::TYPE_MUTAT, $delete);
+        return $this->api->request($delete, self::TYPE_MUTAT);
     }
 
     public function changeMultipleColumnValues( Int $item_id, Array $column_values = [] )
@@ -186,17 +205,17 @@ class MondayBoard extends MondayAPI
             $Item->getFields(['id'])
         );
 
-        return $this->request(self::TYPE_MUTAT, $create);
+        return $this->api->request($create, self::TYPE_MUTAT);
     }
 
     public function customQuery($query)
     {
-        return $this->request(self::TYPE_QUERY, $query);
+        return $this->api->request($query, self::TYPE_QUERY);
     }
 
-    public function customMutation($query)
+    public function customMutation($query, $variables = null)
     {
-        return $this->request(self::TYPE_MUTAT, $query);
+        return $this->api->request($query, self::TYPE_MUTAT, $variables);
     }
 }
 

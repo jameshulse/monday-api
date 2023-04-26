@@ -2,25 +2,15 @@
 
 namespace TBlack\MondayAPI;
 
-class MondayAPI
+class MondayAPI implements ClientInterface
 {
     private $APIV2_Token;
     private $API_Url     = "https://api.monday.com/v2/";
-    private $debug       = false;
 
-    const TYPE_QUERY    = 'query';
-    const TYPE_MUTAT    = 'mutation';
-
-    function __construct( Bool $debug = false )
+    function __construct($token = null)
     {
-        $this->debug = $debug;
-    }
-
-    private function printDebug($print)
-    {
-        echo '<div style="background: #f9f9f9; padding: 20px; position: relative; border: solid 1px #dedede;">
-        '.$print.'
-        </div>';
+        if($token)
+            $this->setToken($token);
     }
 
     public function setToken( Token $token )
@@ -29,15 +19,18 @@ class MondayAPI
         return $this;
     }
 
-    private function content($type, $request)
+    protected function content($type, $request, $variables = null)
     {
-        if($this->debug){
-            $this->printDebug( $type.' { '.$request.' } ' );
+        $body = ['query' => $type.' { '.$request.' } '];
+
+        if ($variables) {
+            $body['variables'] = $variables;
         }
-        return json_encode(['query' => $type.' { '.$request.' } ']);
+
+        return json_encode($body);
     }
 
-    protected function request( $type = self::TYPE_QUERY, $request = null )
+    public function request($request, $type = 'query', $variables = null)
     {
         $headers = [
             'Content-Type: application/json',
@@ -49,7 +42,7 @@ class MondayAPI
             'http' => [
                 'method' => 'POST',
                 'header' => $headers,
-                'content' => $this->content($type, $request),
+                'content' => $this->content($type, $request, $variables),
             ]
         ]));
 
