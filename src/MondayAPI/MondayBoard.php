@@ -95,17 +95,19 @@ class MondayBoard extends MondayAPI
         return $this->request( self::TYPE_QUERY, $boards );
     }
 
-    public function addItem(String $item_name, array $itens = [], $create_labels_if_missing = false)
+    public function addItem(String $item_name, array $items = [], $create_labels_if_missing = false)
     {
-        if (!$this->board_id || !$this->group_id)
+        if (!$this->board_id)
             return -1;
 
         $arguments = [
             'board_id'    => $this->board_id,
-            'group_id'    => $this->group_id,
             'item_name'   => $item_name,
-            'column_values' => Column::newColumnValues($itens),
+            'column_values' => Column::newColumnValues($items),
         ];
+
+        if ($this->group_id)
+            $arguments['group_id'] = $this->group_id;
 
         $Item = new Item();
 
@@ -121,12 +123,12 @@ class MondayBoard extends MondayAPI
         return $this->request(self::TYPE_MUTAT, $create);
     }
 
-    public function addSubItem( Int $parent_item_id, String $item_name, Array $itens = [] )
+    public function addSubItem( Int $parent_item_id, String $item_name, Array $items = [] )
     {
         $arguments = [
             'parent_item_id'  => $parent_item_id,
             'item_name'       => $item_name,
-            'column_values'   => Column::newColumnValues( $itens ),
+            'column_values'   => Column::newColumnValues( $items ),
         ];
 
         $SubItem = new SubItem();
