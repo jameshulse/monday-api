@@ -5,13 +5,11 @@ namespace TBlack\MondayAPI\ObjectTypes;
 class ActivityLogType extends ObjectModel
 {
     // Query scope
-    static $scope = 'activity_logs';
+    public static string $scope = 'activity_logs';
 
     // Arguments
-    static $arguments = array();
+    public static array $arguments = [];
 
     // Fields
-    static $fields = array();
+    public static array $fields = [];
 }
-
-?>

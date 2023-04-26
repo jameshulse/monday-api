@@ -5,13 +5,11 @@ namespace TBlack\MondayAPI\ObjectTypes;
 class User extends ObjectModel
 {
     // Query scope
-    static $scope = 'owner';
+    public static string $scope = 'owner';
 
     // Arguments
-    static $arguments = array();
+    public static array $arguments = [];
 
     // Fields
-    static $fields = array();
+    public static array $fields = [];
 }
-
-?>

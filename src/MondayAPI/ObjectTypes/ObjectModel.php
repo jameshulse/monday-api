@@ -7,34 +7,34 @@ use TBlack\MondayAPI\Querying\Query;
 class ObjectModel
 {
     // Query scope
-    static $scope = '';
+    public static string $scope = '';
 
     // Arguments
-    static $arguments = array();
+    public static array $arguments = [];
 
     // Fields
-    static $fields = array();
+    public static array $fields = [];
 
-    function __construct()
+    public function __construct()
     {
         return $this;
     }
 
-    public function getFields( Array $fields = [], $alt_fields = false )
+    public function getFields(array $fields = [], $alt_fields = false): array
     {
-        return [ Query::buildFields(
+        return [Query::buildFields(
             Query::buildFieldsArgs(
-                ($alt_fields==false?static::$fields:$alt_fields),
+                (!$alt_fields ? static::$fields : $alt_fields),
                 $fields
             )
         )];
     }
 
-    public function getArguments( Array $arguments = [], $alt_arguments = false, String $prepend_args = '' )
+    public function getArguments(array $arguments = [], $alt_arguments = false, string $prepend_args = ''): string
     {
         return Query::buildArguments(
             Query::buildArgsFields(
-                ($alt_arguments==false?static::$arguments:$alt_arguments),
+                (!$alt_arguments ? static::$arguments : $alt_arguments),
                 $arguments
             ),
             $prepend_args
@@ -47,5 +47,3 @@ class ObjectModel
         return false;
     }
 }
-
-?>

@@ -6,7 +6,7 @@ class Token
 {
     private $token = false;
 
-    function __construct($token)
+    public function __construct($token)
     {
         $this->token = $token;
     }
@@ -16,6 +16,3 @@ class Token
         return $this->token;
     }
 }
-
-
-?>

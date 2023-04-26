@@ -4,14 +4,12 @@ namespace TBlack\MondayAPI\ObjectTypes;
 
 class Group extends ObjectModel
 {
-		// Query scope
-		static $scope = 'groups';
+    // Query scope
+    public static string $scope = 'groups';
 
-		// Arguments
-		static $arguments = array();
+    // Arguments
+    public static array $arguments = [];
 
-		// Fields
-		static $fields = array();
+    // Fields
+    public static array $fields = [];
 }
-
-?>

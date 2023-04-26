@@ -5,13 +5,11 @@ namespace TBlack\MondayAPI\ObjectTypes;
 class Tag extends ObjectModel
 {
     // Query scope
-    static $scope = 'tags';
+    public static string $scope = 'tags';
 
     // Arguments
-    static $arguments = array();
+    public static array $arguments = [];
 
     // Fields
-    static $fields = array();
+    public static array $fields = [];
 }
-
-?>

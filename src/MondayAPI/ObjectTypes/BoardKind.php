@@ -4,9 +4,9 @@ namespace TBlack\MondayAPI\ObjectTypes;
 
 class BoardKind
 {
-    const PUB = 'public';
-    const PRV = 'private';
-    const SHR = 'share';
-}
+    public const PUB = 'public';
 
-?>
+    public const PRV = 'private';
+
+    public const SHR = 'share';
+}

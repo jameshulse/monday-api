@@ -5,13 +5,11 @@ namespace TBlack\MondayAPI\ObjectTypes;
 class Update extends ObjectModel
 {
     // Query scope
-    static $scope = 'updates';
+    public static string $scope = 'updates';
 
     // Arguments
-    static $arguments = array();
+    public static array $arguments = [];
 
     // Fields
-    static $fields = array();
+    public static array $fields = [];
 }
-
-?>
